@@ -80,9 +80,9 @@ Crie o banco de dados:
 
 No MySQL Workbench, execute o script petshop.sql localizado na pasta db.
 
-Ajuste a senha de conexão em ConexaoMySQL.java, se necessário.
-
 Execute a classe MenuPrincipal.java.
+
+--- ---
 
 ✅ Funcionalidades
 Cadastro de clientes com validação de e-mail e telefone
