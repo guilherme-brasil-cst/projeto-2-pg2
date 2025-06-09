@@ -18,6 +18,7 @@ Este projeto foi desenvolvido como parte da disciplina de Programação em Java.
 O projeto foi organizado em pacotes para manter o código limpo e coeso:
 
 src/
+
 ├── com.mycompany.projeto1pg2.dao # Classes de acesso a dados (DAO)
 
 ├── com.mycompany.projeto1pg2.main # Classe Main e SistemaPetShop
