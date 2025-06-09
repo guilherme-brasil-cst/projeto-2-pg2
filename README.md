@@ -19,10 +19,15 @@ O projeto foi organizado em pacotes para manter o código limpo e coeso:
 
 src/
 ├── com.mycompany.projeto1pg2.dao # Classes de acesso a dados (DAO)
+
 ├── com.mycompany.projeto1pg2.main # Classe Main e SistemaPetShop
+
 ├── com.mycompany.projeto1pg2.model # Classes de modelo (Cliente, Pet, Serviço etc.)
+
 ├── com.mycompany.projeto1pg2.util # Conexão com o banco de dados
+
 ├── com.mycompany.projeto1pg2.view # Interfaces gráficas (Swing)
+
 └── db # Script SQL de criação do banco
 
 (OBS: A pasta "projeto1pg2", que fica dentro de "projeto-2-pg2", se chama assim pois o projeto deste sistema foi feito a partir de uma base do projeto 1, solicitado anteriormente).
