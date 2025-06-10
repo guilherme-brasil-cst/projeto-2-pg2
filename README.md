@@ -17,17 +17,29 @@ O projeto foi organizado em pacotes para manter o código limpo, coeso e seguind
 
 projeto-2-pg2/
 ├── db/                         # Contém o script SQL para criação do banco de dados (petshop.sql)
+
 ├── lib/                        # Biblioteca externa (mysql-connector-java-8.0.30.jar)
+
 ├── pom.xml                     # Arquivo de configuração do projeto Maven
+
 └── src/
+
 └── main/
+
 └── java/
+
 └── com/mycompany/projeto1pg2/
+
 ├── dao/        # Data Access Objects (DAOs) - Classes para interagir com o banco de dados (ClienteDAO, PetDAO, ServicoDAO)
+
 ├── main/       # Contém a classe principal da aplicação (SistemaPetShop)
+
 ├── model/      # Classes de modelo de dados (Cliente, Pet, Servico, Adestramento, BanhoETosa, ConsultaVeterinaria, Hospedagem)
+
 ├── util/       # Classes de utilitários, como a conexão com o banco de dados (ConexaoMySQL)
+
 └── view/       # Classes de interface gráfica de usuário (GUIs) em Swing (MenuPrincipal, CadastroCliente, ListarClientes, etc.)
+
 
 **(OBS:** A pasta "projeto1pg2", que fica dentro de "projeto-2-pg2", se chama assim pois o projeto deste sistema foi feito a partir de uma base de um projeto anterior, solicitado anteriormente.)
 
@@ -126,9 +138,17 @@ Cada integrante do grupo participou ativamente em praticamente todas as etapas d
 
 ## 📷 Prints e Demonstrações:
 
-teste
+- Print do menu principal aberto:
 ![menuprincipal](https://github.com/user-attachments/assets/e2850c2c-2f17-4fe8-b7b8-1fc24327b1e8)
 
+-Print da página de cadastro de clientes:   
+![cadastrocliente](https://github.com/user-attachments/assets/0b070ea0-a3f3-4999-937d-2e3452b2c116)
+
+- Print da página da lista de clientes:
+  ![listacliente](https://github.com/user-attachments/assets/f2f47863-ab14-4b52-8089-1a947d799fa2)
+
+- Print do banco de dados aberto e as tabelas devidamente criadas:
+![mysqlaberto](https://github.com/user-attachments/assets/3c7ddc73-9d62-4b7a-90e7-46e47a032c9b)
 
 ---
 
