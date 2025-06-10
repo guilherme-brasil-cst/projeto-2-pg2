@@ -98,7 +98,7 @@ public class CadastroPet extends JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Erro ao salvar pet: " + ex.getMessage() + ". Verifique o console.", "Erro no Sistema", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace(); 
-            }
+                }
         });
 
         btnCancelar.addActionListener(e -> dispose());

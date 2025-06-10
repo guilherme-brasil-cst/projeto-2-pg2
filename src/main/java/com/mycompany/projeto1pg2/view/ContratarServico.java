@@ -145,7 +145,7 @@ public class ContratarServico extends JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Erro ao contratar serviço: " + ex.getMessage(), "Erro no Sistema", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
-            }
+        }
         });
 
         btnCancelar.addActionListener(e -> dispose());
