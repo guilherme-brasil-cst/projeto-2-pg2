@@ -141,7 +141,7 @@ Cada integrante do grupo participou ativamente em praticamente todas as etapas d
 - Print do menu principal aberto:
 ![menuprincipal](https://github.com/user-attachments/assets/e2850c2c-2f17-4fe8-b7b8-1fc24327b1e8)
 
--Print da página de cadastro de clientes:   
+- Print da página de cadastro de clientes:   
 ![cadastrocliente](https://github.com/user-attachments/assets/0b070ea0-a3f3-4999-937d-2e3452b2c116)
 
 - Print da página da lista de clientes:
