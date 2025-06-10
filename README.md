@@ -145,10 +145,13 @@ Cada integrante do grupo participou ativamente em praticamente todas as etapas d
 ![cadastrocliente](https://github.com/user-attachments/assets/0b070ea0-a3f3-4999-937d-2e3452b2c116)
 
 - Print da página da lista de clientes:
-  ![listacliente](https://github.com/user-attachments/assets/f2f47863-ab14-4b52-8089-1a947d799fa2)
+![listacliente](https://github.com/user-attachments/assets/f2f47863-ab14-4b52-8089-1a947d799fa2)
 
 - Print do banco de dados aberto e as tabelas devidamente criadas:
-![mysqlaberto](https://github.com/user-attachments/assets/3c7ddc73-9d62-4b7a-90e7-46e47a032c9b)
+![mysql](https://github.com/user-attachments/assets/7b99b0b4-70e5-4ebd-be7b-49570229b357)
+
+- Print do Netbeans e o projeto abertos:
+![netbeansaberto](https://github.com/user-attachments/assets/aca6a1a2-57e0-406c-bdf1-0798c954f97a)
 
 ---
 
