@@ -9,54 +9,51 @@ import com.mycompany.projeto1pg2.dao.ServicoDAO;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.List;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.JFormattedTextField; // Importar
+import javax.swing.SpinnerNumberModel;
 
 public class ContratarServico extends JFrame {
 
     private JComboBox<Cliente> comboClientes;
     private JComboBox<Pet> comboPets;
+    private JComboBox<Servico> comboTipos;       // ← novo combo
     private JSpinner spinnerDia, spinnerMes, spinnerAno;
 
     public ContratarServico() {
         setTitle("Contratar Serviço");
-        setSize(450, 300);
+        setSize(450, 350);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(5, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
+        // 1) Cliente
         panel.add(new JLabel("Cliente:"));
         comboClientes = new JComboBox<>();
-        
         if (!carregarClientesNoCombo()) {
-            dispose(); 
-            return; 
+            dispose();
+            return;
         }
         panel.add(comboClientes);
 
+        // 2) Pet
         panel.add(new JLabel("Pet:"));
         comboPets = new JComboBox<>();
-        comboClientes.addActionListener(e -> carregarPetsNoCombo()); 
-        carregarPetsNoCombo(); 
+        comboClientes.addActionListener(e -> carregarPetsNoCombo());
+        carregarPetsNoCombo();
         panel.add(comboPets);
 
+        // 3) Data
         panel.add(new JLabel("Data do serviço:"));
         JPanel datePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        
         LocalDate today = LocalDate.now();
         spinnerDia = new JSpinner(new SpinnerNumberModel(today.getDayOfMonth(), 1, 31, 1));
         spinnerMes = new JSpinner(new SpinnerNumberModel(today.getMonthValue(), 1, 12, 1));
         spinnerAno = new JSpinner(new SpinnerNumberModel(today.getYear(), today.getYear(), today.getYear() + 50, 1));
-        
-        // CORREÇÃO DO FORMATO DO ANO AQUI
-        JSpinner.NumberEditor yearEditor = new JSpinner.NumberEditor(spinnerAno, "0"); // "0" remove separadores de milhar
-        spinnerAno.setEditor(yearEditor);
-
+        JSpinner.NumberEditor yEd = new JSpinner.NumberEditor(spinnerAno, "0");
+        spinnerAno.setEditor(yEd);
         datePanel.add(spinnerDia);
         datePanel.add(new JLabel("/"));
         datePanel.add(spinnerMes);
@@ -64,88 +61,75 @@ public class ContratarServico extends JFrame {
         datePanel.add(spinnerAno);
         panel.add(datePanel);
 
-        // Listener para ajustar o dia máximo quando o mês/ano muda
-        ChangeListener dateChangeListener = e -> {
+        // 4) Tipo de Serviço
+        panel.add(new JLabel("Tipo de Serviço:"));
+        comboTipos = new JComboBox<>();
+        panel.add(comboTipos);
+        // popula com os tipos
+        ServicoDAO dao = new ServicoDAO();
+        List<Servico> tipos = dao.listarTipos();
+        for (Servico t : tipos) {
+            comboTipos.addItem(t);
+        }
+
+        // Ajusta máximo de dias ao mudar mês/ano
+        ChangeListener dateChange = e -> {
             try {
-                int year = (int) spinnerAno.getValue();
-                int month = (int) spinnerMes.getValue();
-                LocalDate tempDate = LocalDate.of(year, month, 1);
-                int maxDay = tempDate.lengthOfMonth();
-                int currentDay = (int) spinnerDia.getValue();
-                ((SpinnerNumberModel) spinnerDia.getModel()).setMaximum(maxDay);
-                if (currentDay > maxDay) {
-                    spinnerDia.setValue(maxDay);
-                }
-            } catch (Exception ex) {
-                // Ignora erros de data inválida (ex: 31 de fevereiro) durante a digitação
-            }
+                int y = (int) spinnerAno.getValue();
+                int m = (int) spinnerMes.getValue();
+                int max = LocalDate.of(y, m, 1).lengthOfMonth();
+                SpinnerNumberModel md = (SpinnerNumberModel) spinnerDia.getModel();
+                md.setMaximum(max);
+                if ((int) spinnerDia.getValue() > max) spinnerDia.setValue(max);
+            } catch (Exception ignored) {}
         };
-        spinnerMes.addChangeListener(dateChangeListener);
-        spinnerAno.addChangeListener(dateChangeListener);
+        spinnerMes.addChangeListener(dateChange);
+        spinnerAno.addChangeListener(dateChange);
 
+        // botões
         JButton btnContratar = new JButton("Contratar");
-        JButton btnCancelar = new JButton("Cancelar");
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(btnContratar);
-        buttonPanel.add(btnCancelar);
+        JButton btnCancelar  = new JButton("Cancelar");
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnPanel.add(btnContratar);
+        btnPanel.add(btnCancelar);
 
         add(panel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
-        
+        add(btnPanel, BorderLayout.SOUTH);
         setVisible(true);
 
+        // ação Contratar
         btnContratar.addActionListener(e -> {
-            try {
-                Cliente clienteSelecionado = (Cliente) comboClientes.getSelectedItem();
-                Pet petSelecionado = (Pet) comboPets.getSelectedItem();
+            Cliente cli = (Cliente) comboClientes.getSelectedItem();
+            Pet pet   = (Pet)    comboPets.getSelectedItem();
+            Servico selTipo = (Servico) comboTipos.getSelectedItem();
 
-                if (clienteSelecionado == null) {
-                    JOptionPane.showMessageDialog(this, "Selecione um cliente.", "Erro", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                if (petSelecionado == null) {
-                    JOptionPane.showMessageDialog(this, "Selecione um pet.", "Erro", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+            if (cli == null || pet == null || selTipo == null) {
+                JOptionPane.showMessageDialog(this, "Selecione cliente, pet e tipo.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-                int dia = (int) spinnerDia.getValue();
-                int mes = (int) spinnerMes.getValue();
-                int ano = (int) spinnerAno.getValue();
-                LocalDate dataServico = LocalDate.of(ano, mes, dia);
+            LocalDate dt = LocalDate.of(
+                (int) spinnerAno.getValue(),
+                (int) spinnerMes.getValue(),
+                (int) spinnerDia.getValue()
+            );
+            if (!dt.isAfter(LocalDate.now())) {
+                JOptionPane.showMessageDialog(this, "Data deve ser futura.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-                if (!dataServico.isAfter(LocalDate.now())) {
-                    JOptionPane.showMessageDialog(this, "A data do serviço deve ser futura.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+            // sobrepõe a data do objeto tipo
+            selTipo.setData(dt);
 
-                Servico servico = new Servico(dataServico) {
-                    @Override
-                    public String getDescricao() {
-                        return "Serviço de " + petSelecionado.getTipo() + " para " + petSelecionado.getNome();
-                    }
-                };
-                
-                ServicoDAO servicoDAO = new ServicoDAO();
-                int idServicoGerado = servicoDAO.inserirServico(servico, clienteSelecionado.getId(), petSelecionado.getId()); 
-                
-                if (idServicoGerado != -1) {
-                    servico.setId(idServicoGerado); 
-                    servico.setClienteId(clienteSelecionado.getId());
-                    servico.setPetId(petSelecionado.getId());
-                    SistemaPetShop.adicionarServico(servico); 
-                    JOptionPane.showMessageDialog(this, "Serviço contratado com sucesso!");
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Erro ao contratar serviço no banco de dados.", "Erro no Banco de Dados", JOptionPane.ERROR_MESSAGE);
-                }
-
-            } catch (DateTimeParseException ex) {
-                JOptionPane.showMessageDialog(this, "Data inválida. Verifique o dia, mês e ano.", "Erro de Data", JOptionPane.ERROR_MESSAGE);
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Erro ao contratar serviço: " + ex.getMessage(), "Erro no Sistema", JOptionPane.ERROR_MESSAGE);
-                ex.printStackTrace();
-        }
+            int idGerado = dao.inserirServico(selTipo, cli.getId(), pet.getId());
+            if (idGerado != -1) {
+                selTipo.setId(idGerado);
+                SistemaPetShop.adicionarServico(selTipo);
+                JOptionPane.showMessageDialog(this, "Servico contratado com sucesso!");
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Erro ao salvar no banco.", "Erro BD", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         btnCancelar.addActionListener(e -> dispose());
@@ -153,29 +137,19 @@ public class ContratarServico extends JFrame {
 
     private boolean carregarClientesNoCombo() {
         comboClientes.removeAllItems();
-        SistemaPetShop.carregarClientesDoBanco(); // Garante que a lista de clientes em SistemaPetShop esteja atualizada
-        List<Cliente> clientes = SistemaPetShop.getClientes();
-        if (clientes.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Nenhum cliente cadastrado. Por favor, cadastre um cliente primeiro.", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return false; 
-        }
-        for (Cliente c : clientes) {
+        SistemaPetShop.carregarClientesDoBanco();
+        for (Cliente c : SistemaPetShop.getClientes()) {
             comboClientes.addItem(c);
         }
-        return true; 
+        return !SistemaPetShop.getClientes().isEmpty();
     }
-    
+
     private void carregarPetsNoCombo() {
         comboPets.removeAllItems();
-        Cliente clienteSelecionado = (Cliente) comboClientes.getSelectedItem();
-        if (clienteSelecionado != null) {
-            List<Pet> petsDoCliente = clienteSelecionado.getPets();
-            if (petsDoCliente.isEmpty()) {
-                // Combo de pets ficará vazio
-            } else {
-                for (Pet p : petsDoCliente) {
-                    comboPets.addItem(p);
-                }
+        Cliente c = (Cliente) comboClientes.getSelectedItem();
+        if (c != null) {
+            for (Pet p : c.getPets()) {
+                comboPets.addItem(p);
             }
         }
     }

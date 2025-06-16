@@ -36,7 +36,7 @@ public abstract class Servico {
         return data;
     }
     
-    public void setData(LocalDate data) { // Adicionando setter para data, se necessário
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
@@ -54,5 +54,11 @@ public abstract class Servico {
 
     public void setPetId(int petId) {
         this.petId = petId;
+    }
+
+    @Override
+    public String toString() {
+        // É usado pelo JComboBox para exibir o item
+        return getDescricao();
     }
 }

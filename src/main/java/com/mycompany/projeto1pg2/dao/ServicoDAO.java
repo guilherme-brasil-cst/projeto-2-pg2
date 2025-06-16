@@ -1,22 +1,20 @@
 package com.mycompany.projeto1pg2.dao;
 
 import com.mycompany.projeto1pg2.model.Servico;
+import com.mycompany.projeto1pg2.model.BanhoETosa;
+import com.mycompany.projeto1pg2.model.Adestramento;
+import com.mycompany.projeto1pg2.model.ConsultaVeterinaria;
+import com.mycompany.projeto1pg2.model.Hospedagem;
 import com.mycompany.projeto1pg2.util.ConexaoMySQL;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
-import java.sql.Date; 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServicoDAO {
 
     public int inserirServico(Servico servico, int clienteId, int petId) {
-        // CORREÇÃO: Certifique-se que o nome da tabela aqui é 'servico' (singular)
         String sql = "INSERT INTO servico (descricao, data, cliente_id, pet_id) VALUES (?, ?, ?, ?)";
         int idGerado = -1;
 
@@ -29,14 +27,13 @@ public class ServicoDAO {
             stmt.setInt(4, petId);
 
             int affectedRows = stmt.executeUpdate();
-
             if (affectedRows > 0) {
                 try (ResultSet rs = stmt.getGeneratedKeys()) {
                     if (rs.next()) {
                         idGerado = rs.getInt(1);
-                        servico.setId(idGerado); 
-                        servico.setClienteId(clienteId); 
-                        servico.setPetId(petId);       
+                        servico.setId(idGerado);
+                        servico.setClienteId(clienteId);
+                        servico.setPetId(petId);
                         System.out.println("✅ Serviço salvo com sucesso no banco! ID: " + idGerado);
                     }
                 }
@@ -60,17 +57,16 @@ public class ServicoDAO {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String descricao = rs.getString("descricao");
-                LocalDate data = rs.getDate("data").toLocalDate(); 
+                LocalDate data = rs.getDate("data").toLocalDate();
                 int clienteId = rs.getInt("cliente_id");
                 int petId = rs.getInt("pet_id");
 
                 Servico servico = new Servico(id, data, clienteId, petId) {
                     @Override
                     public String getDescricao() {
-                        return descricao; 
+                        return descricao;
                     }
                 };
-                
                 servicos.add(servico);
             }
 
@@ -79,5 +75,17 @@ public class ServicoDAO {
             e.printStackTrace();
         }
         return servicos;
+    }
+
+    /*** NOVO: lista as classes de Serviços (tipos) disponíveis ***/
+    public List<Servico> listarTipos() {
+        // usa LocalDate.now() apenas como placeholder; a data real será aplicada na UI
+        LocalDate placeholder = LocalDate.now();
+        List<Servico> tipos = new ArrayList<>();
+        tipos.add(new BanhoETosa(placeholder));
+        tipos.add(new Adestramento(placeholder));
+        tipos.add(new ConsultaVeterinaria(placeholder));
+        tipos.add(new Hospedagem(placeholder));
+        return tipos;
     }
 }
