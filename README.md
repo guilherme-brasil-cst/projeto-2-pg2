@@ -106,7 +106,7 @@ O sistema utiliza o banco de dados **MySQL** para persistência de todos os dado
 
 -   **Cadastro de Clientes:** Com validação de nome, e-mail e telefone, e persistência no MySQL.
 -   **Cadastro de Pets:** Vinculados a clientes existentes e persistência no MySQL.
--   **Contratação de Serviços:** Permite selecionar cliente e pet, escolher a data do serviço (com validação de data futura), e persistir o serviço no MySQL.
+-   **Contratação de Serviços:** Permite selecionar cliente e pet, escolher a data e uma modalidade do serviço (com validação de data futura), e persistir o serviço no MySQL.
 -   **Listagem de Clientes:** Exibe todos os clientes cadastrados em uma interface gráfica de tabela, carregando dados do MySQL.
 -   **Listagem de Serviços:** Exibe todos os serviços contratados em uma interface gráfica de tabela, carregando dados do MySQL.
 -   **Interface Gráfica (GUI):** Aplicação baseada em Java Swing para uma experiência de usuário intuitiva.
