@@ -16,6 +16,7 @@ Este projeto foi desenvolvido como parte da disciplina de Programação em Java.
 O projeto foi organizado em pacotes para manter o código limpo, coeso e seguindo os princípios de separação de responsabilidades:
 
 projeto-2-pg2/
+
 ├── db/                         # Contém o script SQL para criação do banco de dados (petshop.sql)
 
 ├── lib/                        # Biblioteca externa (mysql-connector-java-8.0.30.jar)
@@ -40,6 +41,7 @@ projeto-2-pg2/
 
 └── view/       # Classes de interface gráfica de usuário (GUIs) em Swing (MenuPrincipal, CadastroCliente, ListarClientes, etc.)
 
+└── target/ # Surgiu durante um procedimento de arrumar problemas relacionados ao banco de dados. Logo, deve ser ignorada.
 
 **(OBS:** A pasta "projeto1pg2", que fica dentro de "projeto-2-pg2", se chama assim pois o projeto deste sistema foi feito a partir de uma base de um projeto anterior, solicitado anteriormente.)
 
