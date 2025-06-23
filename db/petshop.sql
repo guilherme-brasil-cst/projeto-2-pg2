@@ -9,11 +9,9 @@ CREATE DATABASE petshop;
 USE petshop;
 
 -- Desativa a verificação de chaves estrangeiras temporariamente.
--- Isso é útil para dropar e recriar tabelas sem se preocupar com a ordem das dependências.
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- Dropa as tabelas existentes no schema 'petshop' (se existirem) para evitar erros de recriação.
--- A ordem de drop é importante devido às chaves estrangeiras: 'servico' e 'pet' primeiro, depois 'cliente'.
 DROP TABLE IF EXISTS servico;
 DROP TABLE IF EXISTS pet;
 DROP TABLE IF EXISTS cliente;
